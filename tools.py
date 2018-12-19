@@ -108,6 +108,19 @@ def generate_dataset_regression(nb_samples, noise=0.0):
     X = (X + noise) / (255 + 2 * noise)
     return [X, Y]
 
+def generate_dataset_denoising(nb_samples, noise=0.0):
+    # Getting im_size:eval
+    im_size = generate_a_triangle()[0].shape[0]
+    X_denoise = np.zeros([nb_samples,im_size])
+    print('Creating data:')
+    for i in range(nb_samples):
+        if i % 100 == 0:
+            print(i)
+        [X_denoise[i], _] = generate_a_triangle(noise, True)
+    
+    X = (X_denoise + noise) / (255 + 2 * noise)
+    return [X_denoise, X]
+
 import matplotlib.patches as patches
 
 def visualize_prediction(x, y):
@@ -126,6 +139,11 @@ def visualize_prediction(x, y):
 def generate_test_set_regression():
     np.random.seed(42)
     [X_test, Y_test] = generate_dataset_regression(300, 20)
+    return [X_test, Y_test]
+
+def generate_test_set_denoising():
+    np.random.seed(42)
+    [X_test, Y_test] = generate_dataset_denoising(300, 20)
     return [X_test, Y_test]
 
 
